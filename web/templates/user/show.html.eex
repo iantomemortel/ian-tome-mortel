@@ -1,2 +1,16 @@
-<h1>Showing User</h1>
-<%= render "user.html", user: @user %>
+<div class="row">
+  <div class="col-md-12 alert alert-info">
+    Hello, <span id="User"><%= first_name(@user) %></span>!
+  </div>
+  <div  class="col-md-8">
+    <h2>Messages</h2>
+  <ul id="messages" class="list-unstyled" style="height: 300px; border: 1px solid #ccc; overflow-y: auto; padding: 20px" ></ul>
+     <input type="text" id="chat-input" placeholder="Type and press enter..." class="form-control">
+     </div>
+<!--  <div  class="col-md-4">
+    <h2>Who’s Online</h2>
+    <ul id="UserList" class="list-unstyled">
+      <li>Loading online users...</li>
+    </ul>
+</div>-->
+</div>

@@ -6,6 +6,8 @@
 import {Socket} from "phoenix"
 
 let socket = new Socket("/socket", {params: {token: window.userToken}})
+let user = document.getElementById("User").innerText
+let date = new Date();
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -54,7 +56,24 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
+let channel = socket.channel("room:lobby", {})
+let chatInput         = document.querySelector("#chat-input")
+let messagesContainer = document.querySelector("#messages")
+
+chatInput.addEventListener("keypress", event => {
+  if(event.keyCode === 13){
+    channel.push("new_msg", {body: chatInput.value})
+    chatInput.value = ""
+  }
+})
+
+channel.on("new_msg", payload => {
+  let messageItem = document.createElement("li");
+  messageItem.innerHTML = `<b>${user}</b> <i>${date.toLocaleTimeString()} </i> <p>  ${payload.body} </p>`
+  messagesContainer.appendChild(messageItem)
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+})
+
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })

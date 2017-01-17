@@ -1,10 +1,3 @@
-<h1>Listing Users</h1>
+<h1>Welcome to G-Force Web Page!</h1>
+<h2><%= link "Enter Chat", to: user_path(@conn, :show, @current_user.id) %></h2>
 
-<table class="table">
-  <%= for user <- @users do %>
-    <tr>
-      <td><%= render "user.html", user: user %></td>
-      <td><%= link "View", to: user_path(@conn, :show, user.id) %></td>
-    </tr>
-  <% end %>
-</table>
