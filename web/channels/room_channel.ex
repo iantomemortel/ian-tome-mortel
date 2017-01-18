@@ -1,20 +1,26 @@
 defmodule Rumbl.RoomChannel do
-  use Phoenix.Channel
+  use Rumbl.Web, :channel
+  alias Rumbl.Presence
 
-  def join("room:lobby", _message, socket) do
+  def join("room:lobby", _, socket) do
+    send self(), :after_join
     {:ok, socket}
   end
-  def join("room:" <> _private_room_id, _params, _socket) do
-    {:error, %{reason: "unauthorized"}}
-  end
 
-  def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast! socket, "new_msg", %{body: body}
+  def handle_info(:after_join, socket) do
+    Presence.track(socket, socket.assigns.user, %{
+      online_at: :os.system_time(:milli_seconds)
+    })
+    push socket, "presence_state", Presence.list(socket)
     {:noreply, socket}
   end
 
-  def handle_out("new_msg", payload, socket) do
-    push socket, "new_msg", payload
+  def handle_in("message:new", message, socket) do
+    broadcast! socket, "message:new", %{
+      user: socket.assigns.user,
+      body: message,
+      timestamp: :os.system_time(:milli_seconds)
+    }
     {:noreply, socket}
   end
 end
