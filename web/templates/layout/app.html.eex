@@ -7,27 +7,39 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Phoenix!</title>
+    <title>Hello G-force!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
+<style>
+a:link,a :visited {
+    background-color: #6AE0F5;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
 
+
+a:hover,a :active {
+    color:white;
+    background-color: #014443;
+}
+</style>
   <body>
     <div class="container" role="main">
-      <div class="header">
-        <ol class="breadcrumb text-right">
+             <ol class="breadcrumb text-right"style="background-color:white" >
           <%= if @current_user do %>
-            <li><%= @current_user.username %></li>
+            <li style="color:#01505F"><%= @current_user.username %></li>
             <li>
               <%= link "Log out", to: session_path(@conn, :delete, @current_user),
                                   method: "delete" %>
             </li>
           <% else %>
-            <li><%= link "Register", to: user_path(@conn, :new) %></li>
-            <li><%= link "Log in", to: session_path(@conn, :new) %></li>
+            <li ><%= link "Register", to: user_path(@conn, :new) %></li>
+            <li ><%= link "Log in", to: session_path(@conn, :new) %></li>
           <% end %>
         </ol>
-        <span class="logo"></span>
-      </div>
+        <!-- <span class="logo"></span> -->
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
